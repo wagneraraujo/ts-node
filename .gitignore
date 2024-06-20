@@ -3,3 +3,5 @@
 yarn-log
 .env
 build
+yarn.lock
+package-logk.json
