@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { CitiesController } from "../controllers/cities";
 
 // import { StatusCodes } from "http-status-codes";
-import { CitiesController } from "./../controllers/";
 const router = Router();
 
 router.get("/", (_, res) => {
