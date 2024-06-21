@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import * as yup from "yup";
 import { StatusCodes } from "http-status-codes";
 interface ICities {
@@ -11,12 +11,12 @@ const bodyValidation: yup.Schema<ICities> = yup.object().shape({
   state: yup.string().required().min(3),
 });
 
-export const create = async (req: Request<{}, {}, ICities>, res: Response) => {
-  let validateDate: ICities | undefined = undefined;
+export const createBodyValidator: RequestHandler = async (req, res, next) => {
   try {
-    validateDate = await bodyValidation.validate(req.body, {
+    await bodyValidation.validate(req.body, {
       abortEarly: false,
     });
+    return next();
   } catch (error) {
     const yupError = error as yup.ValidationError;
     const ValidationError: Record<string, string> = {};
@@ -29,7 +29,10 @@ export const create = async (req: Request<{}, {}, ICities>, res: Response) => {
 
     return res.status(StatusCodes.BAD_REQUEST).json({ ValidationError });
   }
+};
 
-  console.log(validateDate);
+export const create = async (req: Request<{}, {}, ICities>, res: Response) => {
+  //validacoes do body com yup
+
   return res.send("Create");
 };
